@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contador de Palabras</title>
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="container">
+
+    <header>
+      <div class="header-inner">
+        <img src="logo.png" alt="Logo" class="logo-mark" style="width: 48px; height: 48px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);" />
+        <div>
+          <h1>Contador de Palabras</h1>
+          <p class="subtitle">Análisis de texto en tiempo real</p>
+        </div>
+        <button id="btn-theme" class="btn-theme" title="Alternar modo claro/oscuro" aria-label="Alternar tema">
+          <!-- Icono sol (modo claro) -->
+          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1"  x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22"   x2="5.64"  y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1"  y1="12" x2="3"  y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22"  y1="19.78" x2="5.64"  y2="18.36"/>
+            <line x1="18.36" y1="5.64"  x2="19.78" y2="4.22"/>
+          </svg>
+          <!-- Icono luna (modo oscuro) -->
+          <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main>
+
+      <section class="editor-section anim-fade-up" style="--delay:.05s">
+        <div class="toolbar">
+          <button class="btn-ghost" id="btn-paste">Pegar</button>
+          <button class="btn-ghost" id="btn-clear">Limpiar</button>
+          <button class="btn-ghost" id="btn-copy">Copiar</button>
+          <label class="toggle-label">
+            <span class="switch">
+              <input type="checkbox" id="ignore-spaces" />
+              <span class="track"></span>
+            </span>
+            Ignorar espacios extra
+          </label>
+        </div>
+        <textarea
+          id="text-input"
+          placeholder="Escribe o pega tu texto aquí…"
+          spellcheck="true"
+        ></textarea>
+        <div class="char-limit-bar">
+          <span id="char-limit-text">0 / 10,000</span>
+          <div class="progress-track">
+            <div id="progress-fill" class="progress-fill"></div>
+          </div>
+        </div>
+      </section>
+
+      <div class="stats-grid">
+        <div class="stat-card stat-primary anim-fade-up" style="--delay:.10s">
+          <span class="stat-label">Palabras</span>
+          <span class="stat-value" id="word-count">0</span>
+        </div>
+        <div class="stat-card anim-fade-up" style="--delay:.13s">
+          <span class="stat-label">Caracteres</span>
+          <span class="stat-value" id="char-count">0</span>
+        </div>
+        <div class="stat-card anim-fade-up" style="--delay:.16s">
+          <span class="stat-label">Sin espacios</span>
+          <span class="stat-value" id="char-no-spaces">0</span>
+        </div>
+        <div class="stat-card anim-fade-up" style="--delay:.19s">
+          <span class="stat-label">Oraciones</span>
+          <span class="stat-value" id="sentence-count">0</span>
+        </div>
+        <div class="stat-card anim-fade-up" style="--delay:.22s">
+          <span class="stat-label">Párrafos</span>
+          <span class="stat-value" id="paragraph-count">0</span>
+        </div>
+        <div class="stat-card anim-fade-up" style="--delay:.25s">
+          <span class="stat-label">T. lectura</span>
+          <span class="stat-value stat-time" id="read-time">—</span>
+        </div>
+        <div class="stat-card anim-fade-up" style="--delay:.28s">
+          <span class="stat-label">T. locución</span>
+          <span class="stat-value stat-time" id="speak-time">—</span>
+        </div>
+        <div class="stat-card anim-fade-up" style="--delay:.31s">
+          <span class="stat-label">Únicas</span>
+          <span class="stat-value" id="unique-words">0</span>
+        </div>
+      </div>
+
+      <div class="details-section">
+        <div class="detail-card anim-fade-up" style="--delay:.34s">
+          <h3 class="section-title">Densidad</h3>
+          <div id="density-list" class="density-list">
+            <p class="empty-msg">Escribe para ver las palabras más frecuentes.</p>
+          </div>
+        </div>
+
+        <div class="detail-card anim-fade-up" style="--delay:.37s">
+          <h3 class="section-title">Buscar en el texto</h3>
+          <div class="search-row">
+            <input type="text" id="search-input" placeholder="Término a buscar…" />
+            <button class="btn-primary" id="btn-search">Buscar</button>
+            <button class="btn-ghost-sm" id="btn-clear-search">Limpiar</button>
+          </div>
+          <p id="search-result" class="search-result"></p>
+          <div id="highlighted-text" class="highlighted-text"></div>
+        </div>
+      </div>
+
+    </main>
+
+    <footer>
+      <span>Contador de Palabras</span>
+      <span class="footer-sep">·</span>
+      <span>Herramienta SEO &amp; Contenidos</span>
+    </footer>
+
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
